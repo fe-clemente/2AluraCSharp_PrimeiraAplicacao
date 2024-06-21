@@ -1,0 +1,161 @@
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
+using System.Numerics;
+using System.Runtime;
+using System.Runtime.CompilerServices;
+
+//List<string> ListaDasBadas = new List<string> {"U2", "WhiteSnake", "  Metallica", "AC/DC", "Iron Maiden" ,"Guns N' Roses", "Led Zeppelin"};
+
+Dictionary<string, List<int>> dictionaryBands = new Dictionary<string, List<int>>();
+dictionaryBands.Add("Linkin Park",  new List<int>{10,8,6});
+dictionaryBands.Add("1",  new List<int>{10,8,6});
+dictionaryBands.Add("The Beatles",  new List<int>{});
+dictionaryBands.Add("White Snake",  new List<int>{10,9,10});
+
+
+
+
+void ExibirLogo()
+{
+    
+Console.WriteLine(@"
+
+░██████╗░█████╗░██████╗░███████╗███████╗███╗░░██╗  ░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░
+██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝████╗░██║  ██╔════╝██╔══██╗██║░░░██║████╗░██║██╔══██╗
+╚█████╗░██║░░╚═╝██████╔╝█████╗░░█████╗░░██╔██╗██║  ╚█████╗░██║░░██║██║░░░██║██╔██╗██║██║░░██║
+░╚═══██╗██║░░██╗██╔══██╗██╔══╝░░██╔══╝░░██║╚████║  ░╚═══██╗██║░░██║██║░░░██║██║╚████║██║░░██║
+██████╔╝╚█████╔╝██║░░██║███████╗███████╗██║░╚███║  ██████╔╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝
+╚═════╝░░╚════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚══╝  ╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░
+");
+Console.WriteLine ("Seja Bem vindo");   
+
+}
+
+void ExibirOpcoesDoMenu()
+{
+    ExibirLogo();
+    Console.WriteLine ("\nDigite 1 para registrar uma banda");
+    Console.WriteLine ("Digite 2 para mostrar todas as bandas");
+    Console.WriteLine ("Digite 3 para avaliar uma banda");
+    Console.WriteLine ("Digite 4 para exibir a média de uma banda");
+    Console.WriteLine ("Digite -1 sair");
+
+    Console.Write(" \nDigite uma opção: ");
+    string opcaoEscolhida = Console.ReadLine()!;
+    int opcaoNumeriica = int.Parse(opcaoEscolhida); 
+    
+
+    switch (opcaoNumeriica)
+    {
+        case 1: RegistrarBandas(); Console.WriteLine ($"Voce escolheu opção {opcaoNumeriica}"); break;
+     
+        case 2: MostrarBandasRegistradas(); break;
+        case 3: AvaliarUmaBanda(); break;
+        case 4: ExibeMediaBanda (); break;
+        case -1: Console.WriteLine ($"God By  {opcaoNumeriica}"); break;
+        default: Console.WriteLine ("Opcao Invalida"); break;       
+    }
+ 
+}
+
+
+void RegistrarBandas()
+    {        
+        Console.Clear();
+        ExibirTituloOpcoes("Registro das Bandas");
+        Console.Write("Digite o nome da banda que voce deseja registrar  ");
+        string nomeDaBanda=Console.ReadLine()!;       
+        dictionaryBands.Add(nomeDaBanda, new List<int>());
+        Console.WriteLine($"A Banda  {nomeDaBanda} foi registrada com sucesso \n");
+        Thread.Sleep(2000);
+        ExibirOpcoesDoMenu();
+    }
+
+void MostrarBandasRegistradas()
+{
+
+        Console.Clear();
+        
+        ExibirTituloOpcoes("Exibindo Bandas Registradas");        
+        /*for (int i = 0; 1< ListaDasBadas.Count; i ++)
+        {
+           Console.WriteLine($"Banda: {ListaDasBadas[i]}");          
+        }  */
+        foreach (string banda in dictionaryBands.Keys)  
+        {
+           Console.WriteLine($"Banda: {banda}"); 
+        }
+        Console.WriteLine("Digite uma tecla para voltar ao menu principal");
+        Console.ReadKey();
+        Console.Clear();
+        ExibirOpcoesDoMenu();
+
+}
+
+void ExibirTituloOpcoes(string titulo)
+{
+    int quantidadeDeLetras = titulo.Length;  // contador de string
+    string astericos = string.Empty.PadLeft(quantidadeDeLetras, '*'); // coloca * visual nos titulos
+     Console.WriteLine(astericos);
+    Console.WriteLine(titulo);
+    Console.WriteLine(astericos +  "\n");
+}
+
+void AvaliarUmaBanda ()
+{
+    // digite qual banda deseja avaliar
+    // se a banda existir no dicionario >> atribua uma nota
+    // senao, volta ao menu principal
+
+    Console.Clear();
+    ExibirTituloOpcoes("Avaliar banda");
+    Console.Write("Digite o nome da Banda que deseja Avaliar:  ");
+    string nomeDaBanda = Console.ReadLine()!;
+    if(dictionaryBands.ContainsKey(nomeDaBanda)) // ContainsKey verifica a digitação
+    {
+        Console.Write($"Qual a nota que a banda  {nomeDaBanda} merece:    " );
+        int nota = int.Parse(Console.ReadLine()!);   // convertendo direto apos Write
+        dictionaryBands[nomeDaBanda].Add(nota);
+        Console.WriteLine($"\nA nota {nota} foi registrada com sucesso para a banda {nomeDaBanda}");
+        Thread.Sleep(2000);
+        Console.Clear();
+        ExibirOpcoesDoMenu();
+
+    }else
+    {
+        Console.WriteLine($"A banda {nomeDaBanda}  nao existe! ");
+        Console.WriteLine("Digite uma tecla para voltar ao menu principal");
+        Console.ReadKey();
+        Console.Clear();
+        ExibirOpcoesDoMenu();
+    }
+}
+
+void ExibeMediaBanda ()
+{
+    Console.Clear();
+    ExibirTituloOpcoes("Exibe Media da Banda");
+    Console.WriteLine("Qual banda quer ver a media? ");
+    string nomeDaBanda = Console.ReadLine()!;
+    if(dictionaryBands.ContainsKey(nomeDaBanda)) 
+    {
+      List<int> notasDaBanda = dictionaryBands[nomeDaBanda]; 
+      Console.WriteLine($" A média da banda {nomeDaBanda} é  {notasDaBanda.Average()}"); 
+      Console.WriteLine("Digite uma tecla para voltar ao menu principal");
+    Console.ReadKey();
+
+    }else         
+    {
+    Console.WriteLine($"A banda {nomeDaBanda}  nao existe! ");
+    Console.WriteLine("Digite uma tecla para voltar ao menu principal");
+    Console.ReadKey();
+    Console.Clear();
+    ExibirOpcoesDoMenu();
+    }
+}
+
+
+
+ExibirOpcoesDoMenu();
